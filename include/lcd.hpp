@@ -2,6 +2,7 @@
 #define ldc_display
 
 #include "TFTv2.h"
+#include "main.hpp"
 
 #define SCREENX_MAX     240 
 #define SCREENY_MAX     320 
@@ -11,6 +12,9 @@
 #define PLOTY_MAX       220
 #define PLOT_H          200
 #define PLOT_W          210
+#define PLOT_DIST       9
+#define PLOT_Px_DATA    25
+#define PLOT_POINT_T    3
 #define DONNEX_MIN      200
 #define DONNEX_MAX      320
 #define DONNEY_MIN      0
@@ -29,6 +33,7 @@ void draw_glycemie(uint16_t draw_glycemie);
 void draw_graphic(uint16_t* plot, uint8_t size_of_plot);
 void draw_batery(uint8_t batery);
 void draw_alert(void);
+void draw_mode(uint8_t mode);
 
 
 void erase_screen(void);
