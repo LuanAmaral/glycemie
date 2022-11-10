@@ -28,11 +28,12 @@
 #define GLY_STEP        30
 #define GLY_STEP_PX     40
 
-void main_screen(uint16_t glycemie, uint16_t* plot, uint8_t size_of_plot, uint8_t batery);
+void main_screen(uint16_t glycemie, uint16_t* plot, uint8_t size_of_plot, uint8_t batery, uint8_t alert);
 void draw_glycemie(uint16_t draw_glycemie);
 void draw_graphic(uint16_t* plot, uint8_t size_of_plot);
 void draw_batery(uint8_t batery);
 void draw_alert(void);
+void draw_alert_screen(uint8_t alert);
 void draw_mode(uint8_t mode);
 
 

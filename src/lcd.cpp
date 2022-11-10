@@ -1,31 +1,35 @@
 #include "lcd.hpp"
 
-void main_screen(uint16_t glycemie, uint16_t* plot, uint8_t size_of_plot, uint8_t batery){
-    //main screen
-    // @param {string} plot vector avec 24 valeur pour le plot
-    // @todo conversao da glicemia para os pixels
-  //Tft.drawRectangle(0, 280, SCREENY_MAX, 40, GRAY1);
-
+void main_screen(uint16_t glycemie, uint16_t* plot, uint8_t size_of_plot, uint8_t batery, uint8_t alert)
+{
   draw_glycemie(glycemie);
-  draw_graphic(plot, size_of_plot);
   draw_batery(batery);
-
+  if (alert == ALERT_NO)
+  {
+    draw_graphic(plot, size_of_plot);
+  }
+  else 
+  {
+    draw_alert_screen(alert);
+    draw_alert();
+  }
 }
 
 void draw_glycemie(uint16_t glycemie)
 {
   Tft.drawNumber(glycemie, 50, 20, 8, WHITE );
-  
-  Tft.drawNumber(50 , 0, 260, 1, WHITE);
-  Tft.drawNumber(80 , 0, 230, 1, WHITE);
-  Tft.drawNumber(110, 0, 200, 1, WHITE);
-  Tft.drawNumber(140, 0, 170, 1, WHITE);
-  Tft.drawNumber(170, 0, 140, 1, WHITE);
-  Tft.drawNumber(200, 0, 110, 1, WHITE);
 }
 
 void draw_graphic(uint16_t* plot, uint8_t size_of_plot)
 {
+    erase_graphic();
+    erase_alert();
+    Tft.drawNumber(50 , 0, 260, 1, WHITE);
+    Tft.drawNumber(80 , 0, 230, 1, WHITE);
+    Tft.drawNumber(110, 0, 200, 1, WHITE);
+    Tft.drawNumber(140, 0, 170, 1, WHITE);
+    Tft.drawNumber(170, 0, 140, 1, WHITE);
+    Tft.drawNumber(200, 0, 110, 1, WHITE);
     Tft.drawLine(20, 260, SCREENX_MAX, 260, GRAY1);
     Tft.drawLine(20, 230, SCREENX_MAX, 230, GREEN);
     Tft.drawLine(20, 200, SCREENX_MAX, 200, GRAY1);
@@ -72,9 +76,6 @@ void draw_graphic(uint16_t* plot, uint8_t size_of_plot)
         points[size_of_plot-2-i] = 310 - *(plot+size_of_plot-2-i);
         Tft.fillCircle(PLOT_Px_DATA+PLOT_DIST*(size_of_plot-i-2), points[size_of_plot-2-i], PLOT_POINT_T, RED);
       }
-      
-      
-
       Tft.drawLine(PLOT_DIST*(size_of_plot-i-1) +PLOT_Px_DATA, points[size_of_plot-1-i], PLOT_DIST*(size_of_plot-i-2)+PLOT_Px_DATA, points[size_of_plot-2-i], RED);
       //Tft.fillCircle(PLOT_DIST*(size_of_plot-i-2)+PLOT_Px_DATA, 310 - *(plot+size_of_plot-2-i), PLOT_POINT_T, RED);
     }
@@ -85,6 +86,26 @@ void draw_alert(void)
     Tft.fillCircle(120, 300, 15, RED);
     Tft.drawString("!", 113, 290, 3, WHITE);
 }
+
+void draw_alert_screen(uint8_t alert)
+{
+    Tft.fillRectangle(0,105,SCREENX_MAX, 165, GRAY1);
+    Tft.fillCircle(20, 175, 15, RED);
+    Tft.drawString("!", 13, 165, 3, WHITE);   
+    if (alert == ALERT_HIPER)
+    {
+      Tft.drawString("Taux de", 40, 130, 3, RED);
+      Tft.drawString("glycemie", 40, 160, 3, RED);
+      Tft.drawString("eleve", 40, 195, 3, RED);
+    }
+    if (alert == ALERT_HIPO)
+    {
+      Tft.drawString("Taux de", 40, 130, 3, RED);
+      Tft.drawString("glycemie", 40, 160, 3, RED);
+      Tft.drawString("bas", 40, 195, 3, RED);
+    }
+}
+
 
 void draw_batery(uint8_t batery)
 {
@@ -112,7 +133,7 @@ void erase_screen(void)
 
 void erase_alert(void)
 {
-    Tft.fillRectangle(115,285, 30, 30,  BLACK);
+    Tft.fillRectangle(105,285, 30, 30,  BLACK);
 }
 
 void erase_glycemie(void)
@@ -127,7 +148,7 @@ void erase_batery(void)
 
 void erase_graphic(void)
 {
-    Tft.fillRectangle(20,110,SCREENX_MAX, 150, BLACK);
+    Tft.fillRectangle(0,105,SCREENX_MAX, 165, BLACK);
 }
 
 
@@ -160,7 +181,6 @@ void erase_graphic(void)
 
   if (*(plot+i) > 200)
       {
-        Serial.println(points[i-1]);
         Tft.drawLine(PLOT_DIST*(i-1)+PLOT_Px_DATA, points[i-1], PLOT_DIST*(i)+PLOT_Px_DATA, 110 , RED);
         Tft.fillCircle(PLOT_DIST*(i-1)+PLOT_Px_DATA, 110, PLOT_POINT_T, YELLOW);
         points[i] = 110;
