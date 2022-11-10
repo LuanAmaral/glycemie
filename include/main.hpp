@@ -6,11 +6,14 @@
 #define EXEC            1
 #define NO_EXEC         0
 #define TOL_ANALOG      50
-#define ALERT_HIPO      1
-#define ALERT_HIPER     2
-#define ALERT_NO        0
 #define GLY_MAX_LIM     180
 #define GLY_MIN_LIM     80
+#define GLY_NO_SENSOR   30
+
+#define ALERT_NO        0
+#define ALERT_HIPO      1
+#define ALERT_HIPER     2
+#define ALERT_NO_SENSOR 3
 
 #define S0              A14
 #define S1              A12

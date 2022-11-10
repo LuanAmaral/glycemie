@@ -139,13 +139,16 @@ void recieve_data(void* arg)
         }
         sucre_meal = data*GLY_CONV;
 
-        if(gly_data > GLY_MAX_LIM) alert = ALERT_HIPER;
+        if(gly_data < GLY_NO_SENSOR) alert = ALERT_NO_SENSOR;
+        else if(gly_data > GLY_MAX_LIM) alert = ALERT_HIPER;
         else if(gly_data < GLY_MIN_LIM) alert = ALERT_HIPO;
         else alert = ALERT_NO;
 
+        Serial.println(alert);
+
         Yi = gly_data - 111;
         U = (A*Yi + B*Ym1 - C*Ym2 + D*Um1 + E*Um2) + K*sucre_meal;
-        if (U<0)
+        if (U<0 || alert == ALERT_NO_SENSOR)
         {
           U = 0;
         }
@@ -157,6 +160,7 @@ void recieve_data(void* arg)
         analogWrite(E0, (U + Ub)*850);
 
         glycemie = (uint16_t)gly_data;
+        if(alert == ALERT_NO_SENSOR) glycemie = 0;
         organise_plot_vector(glycemie, glycemie_data, GLY_DATA_SIZE);
         insuline = (U + Ub);
         

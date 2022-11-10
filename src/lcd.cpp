@@ -36,7 +36,7 @@ void draw_graphic(uint16_t* plot, uint8_t size_of_plot)
     Tft.drawLine(20, 170, SCREENX_MAX, 170, GRAY1);
     Tft.drawLine(20, 140, SCREENX_MAX, 140, GRAY1);
     Tft.drawLine(20, 110, SCREENX_MAX, 110, GRAY1);
-    Tft.drawLine(20, 180, SCREENX_MAX, 180, GREEN);
+    Tft.drawLine(20, 130, SCREENX_MAX, 130, GREEN);
 
 
     uint16_t points[size_of_plot];
@@ -103,6 +103,12 @@ void draw_alert_screen(uint8_t alert)
       Tft.drawString("Taux de", 40, 130, 3, RED);
       Tft.drawString("glycemie", 40, 160, 3, RED);
       Tft.drawString("bas", 40, 195, 3, RED);
+    }
+    if (alert == ALERT_NO_SENSOR)
+    {
+      Tft.drawString("Alarm", 40, 130, 3, RED);
+      Tft.drawString("capteur", 40, 160, 3, RED);
+      Tft.drawString("defaillant", 40, 195, 3, RED);
     }
 }
 
