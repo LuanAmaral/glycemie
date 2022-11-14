@@ -14,6 +14,7 @@
 #define ALERT_HIPO      1
 #define ALERT_HIPER     2
 #define ALERT_NO_SENSOR 3
+#define ALERT_NO_SYS    4
 
 #define S0              A14
 #define S1              A12

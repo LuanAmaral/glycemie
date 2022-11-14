@@ -16,7 +16,7 @@ uint8_t flags;
 uint8_t alert;
 uint16_t glycemie;
 uint16_t sucre_meal;
-uint16_t insuline;
+float insuline;
 
 void regulation(void* arg);
 void screen(void* arg);
@@ -156,20 +156,24 @@ void recieve_data(void* arg)
         Ym1 = Yi;
         Um2 = Um1;
         Um1 = U;
+        insuline = (U + Ub);
       
         analogWrite(E0, (U + Ub)*850);
 
         glycemie = (uint16_t)gly_data;
         if(alert == ALERT_NO_SENSOR) glycemie = 0;
         organise_plot_vector(glycemie, glycemie_data, GLY_DATA_SIZE);
-        insuline = (U + Ub);
+        
         
       }
       else
       {
         flags = NO_EXEC;
+        glycemie = 0;
+        insuline = 0;
+        sucre_meal = 0;
+        alert = ALERT_NO_SYS;
       }
-      // converte to glycemie
       vTaskDelay(ticks_delay);
   }
 }

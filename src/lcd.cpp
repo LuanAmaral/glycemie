@@ -2,9 +2,9 @@
 
 void main_screen(uint16_t glycemie, uint16_t* plot, uint8_t size_of_plot, uint8_t batery, uint8_t alert)
 {
-  draw_glycemie(glycemie);
+  draw_glycemie(glycemie,alert);
   draw_batery(batery);
-  if (alert == ALERT_NO)
+  if (alert == ALERT_NO || alert == ALERT_NO_SYS)
   {
     draw_graphic(plot, size_of_plot);
   }
@@ -15,8 +15,13 @@ void main_screen(uint16_t glycemie, uint16_t* plot, uint8_t size_of_plot, uint8_
   }
 }
 
-void draw_glycemie(uint16_t glycemie)
+void draw_glycemie(uint16_t glycemie, uint8_t alert)
 {
+  if(alert == ALERT_NO_SYS || alert == ALERT_NO_SENSOR) 
+  {
+    Tft.drawString("---", 50, 20, 8, WHITE );
+    return;
+  }
   Tft.drawNumber(glycemie, 50, 20, 8, WHITE );
 }
 
